@@ -31,6 +31,14 @@ namespace PeopleManager.Ui.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Person person)
         {
+            //if (person.FirstName.ToLowerInvariant().Contains("bavlo"))
+            //{
+            //    ModelState.AddModelError("FirstName", "Bavo's mogen hier nie binnen");
+            //}
+            if (!ModelState.IsValid)
+            {
+                return View(person);
+            }
             _dbContext.People.Add(person);
 
             _dbContext.SaveChanges();
@@ -55,6 +63,10 @@ namespace PeopleManager.Ui.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit([FromRoute]int id, Person person)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(person);
+            }
             var dbPerson = _dbContext.People.Find(id);
             if (dbPerson is null)
             {
